@@ -8,7 +8,12 @@ const app = express()
 app.use(morgan('dev'))
 
 app.use(function validateBearerToken(req, res, next){
-    console.log('validate middleware')
+    const apiToken = process.env.API_TOKEN
+    const authToken = req.get('Authorization')
+    // debugger
+    if (!authToken || authToken.split(' ')[1] !== apiToken){
+        return res.status(401).json({error: 'Unauthorized request'})
+    }
     next() 
 })
 
@@ -20,7 +25,7 @@ app.get('/movie', function handleGetMovie(req, res) {
     let response = MOVIES; 
 
     if (req.query.genre) {
-        response = response.filter(movie => movie.genres.toLowerCase().includes(req.query.genre.toLowerCase())
+        response = response.filter(movie => movie.genre.toLowerCase().includes(req.query.genre.toLowerCase())
         )
     }
 
