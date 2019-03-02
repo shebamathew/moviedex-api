@@ -53,7 +53,7 @@ app.use((error, req, res, next) => {
     }
     res.status(500).json(response)
   })
-  b
+
 
 const PORT = process.env.PORT || 8000
 
